@@ -1,12 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../lib/prisma.js";
 import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
 
 const authService = {
   async registerUser({ email, password }) {
-    const userExist = await prisma.user.findUnique({
-      where: { email },
+    const userExist = await prisma.account.findUnique({
+      where: { email: "test@gmail.com" },
     });
 
     if (userExist) {

@@ -3,10 +3,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
-import mongoose from "mongoose";
-// import { PrismaClient } from "@prisma/client";
-import jwt from "jsonwebtoken";
-import { v4 as uuid } from "uuid";
+import authRouter from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -17,15 +14,18 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("combined"));
 
+// Routes
+app.use("/api/auth", authRouter);
+
 // Set up routes
 app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
 
 // Start the server
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//   console.log(`Server started on port ${PORT}`);
-// });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
 
 export default app;
