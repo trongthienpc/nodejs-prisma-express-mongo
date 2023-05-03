@@ -15,7 +15,7 @@ app.use(cors());
 app.use(morgan("combined"));
 
 // Routes
-app.use("/api/auth", authRouter);
+app.use("/auth", authRouter);
 
 // Set up routes
 app.get("/", (req, res) => {
@@ -23,9 +23,9 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
+// const PORT = process.env.PORT || 4000;
+// app.listen(PORT, () => {
+//   console.log(`Server started on port ${PORT}`);
+// });
 
 export default app;

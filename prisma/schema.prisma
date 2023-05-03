@@ -18,7 +18,6 @@ model User {
   posts   Post[]
 }
 
-// Address is an embedded document
 type Address {
   street String
   city   String
@@ -53,4 +52,29 @@ model Account {
   lastName  String?
   role      String?
   // add any other fields you need
+}
+
+model Branch {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  address    String
+  warehouses Warehouse[]
+}
+
+model Warehouse {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  branch   Branch?   @relation(fields: [branchId], references: [id])
+  branchId String    @db.ObjectId
+  products Product[]
+}
+
+model Product {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  price       Float
+  quantity    Int
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
+  warehouseId String    @db.ObjectId
 }
