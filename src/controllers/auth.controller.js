@@ -3,6 +3,7 @@ import authService from "../services/auth.service.js";
 export const register = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log("email, password :>> ", email, password);
   if (!email || !password)
     return res
       .status(400)
@@ -24,6 +25,10 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password)
+    return res
+      .status(401)
+      .json({ status: false, message: "Missing email address // or password" });
   try {
     const response = await authService.loginUser({ email, password });
     return res.status(response.statusCode).json({
@@ -33,6 +38,6 @@ export const login = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    return res.status(400).json({ error: err.message });
+    return res.status(401).json({ error: err.message });
   }
 };

@@ -15,7 +15,7 @@ app.use(cors());
 app.use(morgan("combined"));
 
 // Routes
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 
 // Set up routes
 app.get("/", (req, res) => {

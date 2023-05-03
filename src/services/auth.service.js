@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma.js";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import {
   EMAIL_EXIST,
@@ -47,13 +48,12 @@ const authService = {
     // Find the user by email
     const user = await prisma.account.findUnique({
       where: { email: email },
-      include: { user: true },
     });
 
     if (!user) {
       return {
         statusCode: 401,
-        status: false,
+        success: false,
         message: LOGIN_INVALID,
       };
     }
@@ -64,7 +64,7 @@ const authService = {
     if (!passwordMatch) {
       return {
         statusCode: 401,
-        status: false,
+        success: false,
         message: LOGIN_INVALID,
       };
     }
@@ -72,7 +72,7 @@ const authService = {
     // Generate a JWT token
     const token = jwt.sign(
       {
-        userId: user.user.id,
+        userId: user.id,
         email: user.email,
       },
       process.env.JWT_SECRET,
@@ -81,7 +81,7 @@ const authService = {
 
     return {
       statusCode: 200,
-      status: success,
+      success: true,
       message: LOGIN_SUCCESS,
       data: token,
     };
