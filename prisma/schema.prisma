@@ -43,15 +43,16 @@ model Comment {
 }
 
 model Account {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
-  password  String
-  firstName String?
-  lastName  String?
-  role      String?
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  email        String        @unique
+  password     String
+  firstName    String?
+  lastName     String?
+  role         String?
   // add any other fields you need
+  RefreshToken RefreshToken?
 }
 
 model Branch {
@@ -77,4 +78,13 @@ model Product {
   quantity    Int
   warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
   warehouseId String    @db.ObjectId
+}
+
+model RefreshToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  account   Account? @relation(fields: [userId], references: [id])
+  userId    String   @unique @db.ObjectId
 }

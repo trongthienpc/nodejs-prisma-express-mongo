@@ -4,11 +4,20 @@ import bcrypt from "bcryptjs";
 import {
   EMAIL_EXIST,
   EMAIL_NOT_FOUND,
+  LOGIN_ERROR_CODE,
   LOGIN_INVALID,
+  LOGIN_INVALID_CODE,
   LOGIN_SUCCESS,
   PASSWORD_INCORRECT,
   TOKEN_INVALID,
+  TOKEN_VALID,
 } from "../utils/constants.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken,
+} from "./jwt.service.js";
 
 const authService = {
   async registerUser({ email, password }) {
@@ -46,13 +55,14 @@ const authService = {
 
   async loginUser({ email, password }) {
     // Find the user by email
+
     const user = await prisma.account.findUnique({
       where: { email: email },
     });
 
     if (!user) {
       return {
-        statusCode: 401,
+        statusCode: LOGIN_INVALID_CODE,
         success: false,
         message: LOGIN_INVALID,
       };
@@ -63,46 +73,99 @@ const authService = {
 
     if (!passwordMatch) {
       return {
-        statusCode: 401,
+        statusCode: LOGIN_INVALID_CODE,
         success: false,
         message: LOGIN_INVALID,
       };
     }
 
     // Generate a JWT token
-    const token = jwt.sign(
-      {
+    const accessToken = generateAccessToken(user.id);
+
+    // generate a refresh token
+    const refreshToken = generateRefreshToken(user.id);
+
+    await prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
         userId: user.id,
-        email: user.email,
+        // account: { connect: { id: user.id } },
       },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    });
 
     return {
       statusCode: 200,
       success: true,
       message: LOGIN_SUCCESS,
-      data: token,
+      data: { accessToken, refreshToken },
     };
   },
 
   async verifyToken(token) {
     try {
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      const decodedToken = verifyAccessToken(token);
       const userId = decodedToken.userId;
       const user = await prisma.user.findUnique({
         where: { id: userId },
       });
 
       if (!user) {
-        throw new Error(TOKEN_INVALID);
+        return {
+          statusCode: 401,
+          success: false,
+          message: TOKEN_INVALID,
+        };
       }
 
-      return user;
+      return {
+        data: user,
+        statusCode: 200,
+        success: true,
+        message: TOKEN_VALID,
+      };
     } catch (error) {
-      throw new Error(TOKEN_INVALID);
+      return {
+        statusCode: 401,
+        success: false,
+        message: error?.message,
+      };
     }
+  },
+
+  async refreshTokens({ refreshToken }) {
+    let decodedRefreshToken;
+    try {
+      decodedRefreshToken = verifyRefreshToken(refreshToken);
+    } catch (error) {
+      throw new Error("Invalid refresh token");
+    }
+
+    const existingRefreshToken = await prisma.refreshToken.findFirst({
+      where: { token: refreshToken },
+      select: {
+        account: { select: { id: true } },
+      },
+    });
+
+    if (!existingRefreshToken) {
+      return {
+        statusCode: 401,
+        success: false,
+        message: TOKEN_INVALID,
+      };
+    }
+
+    const accessToken = generateAccessToken(existingRefreshToken.userId);
+
+    return { accessToken };
+  },
+
+  async revokeRefreshToken({ refreshToken }) {
+    const deletedToken = await prisma.refreshToken.delete({
+      where: { token: refreshToken },
+    });
+
+    return !!deletedToken;
   },
 };
 
