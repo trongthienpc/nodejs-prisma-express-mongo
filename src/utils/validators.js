@@ -11,6 +11,6 @@ export const validate = (validations) => {
 
     return res
       .status(400)
-      .json({ message: "Validation error", errors: errors.array() });
+      .json({ message: "Validation failed", errors: errors.array() });
   };
 };

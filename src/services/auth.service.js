@@ -1,16 +1,15 @@
 import prisma from "../lib/prisma.js";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import {
-  EMAIL_EXIST,
-  EMAIL_NOT_FOUND,
-  LOGIN_ERROR_CODE,
-  LOGIN_INVALID,
+  REGISTER_INVALID_CODE,
+  REGISTER_DUPLICATE_EMAIL,
   LOGIN_INVALID_CODE,
-  LOGIN_SUCCESS,
-  PASSWORD_INCORRECT,
   TOKEN_INVALID,
-  TOKEN_VALID,
+  TOKEN_INVALID_CODE,
+  TOKEN_SUCCESS,
+  REFRESH_TOKEN_INVALID,
+  REFRESH_TOKEN_INVALID_CODE,
+  REGISTER_SUCCESS,
 } from "../utils/constants.js";
 import {
   generateAccessToken,
@@ -18,6 +17,8 @@ import {
   verifyAccessToken,
   verifyRefreshToken,
 } from "./jwt.service.js";
+import { LOGIN_INVALID } from "../utils/constants.js";
+import { LOGIN_SUCCESS } from "../utils/constants.js";
 
 const authService = {
   async registerUser({ email, password }) {
@@ -27,9 +28,9 @@ const authService = {
 
     if (userExist) {
       return {
-        statusCode: 400,
+        statusCode: REGISTER_INVALID_CODE,
         success: false,
-        message: EMAIL_EXIST,
+        message: REGISTER_DUPLICATE_EMAIL,
       };
     }
 
@@ -48,7 +49,7 @@ const authService = {
     return {
       statusCode: 200,
       success: true,
-      message: `User created successfully`,
+      message: REGISTER_SUCCESS,
       data: user,
     };
   },
@@ -82,16 +83,28 @@ const authService = {
     // Generate a JWT token
     const accessToken = generateAccessToken(user.id);
 
-    // generate a refresh token
-    const refreshToken = generateRefreshToken(user.id);
-
-    await prisma.refreshToken.create({
-      data: {
-        token: refreshToken,
-        userId: user.id,
-        // account: { connect: { id: user.id } },
-      },
+    let refreshToken = null;
+    const existingRefreshToken = await prisma.refreshToken.findFirst({
+      where: { userId: user.id },
     });
+
+    if (existingRefreshToken) {
+      refreshToken = existingRefreshToken.token;
+      const decodedRefreshToken = verifyRefreshToken(refreshToken);
+      if (decodedRefreshToken !== null)
+        if (Date.now() >= decodedRefreshToken.exp * 1000)
+          refreshToken = generateAccessToken(user.id);
+    } else {
+      // Generate a new refresh token if one doesn't exist
+      refreshToken = generateRefreshToken(user.id);
+
+      await prisma.refreshToken.create({
+        data: {
+          token: refreshToken,
+          userId: user.id,
+        },
+      });
+    }
 
     return {
       statusCode: 200,
@@ -111,7 +124,7 @@ const authService = {
 
       if (!user) {
         return {
-          statusCode: 401,
+          statusCode: TOKEN_INVALID_CODE,
           success: false,
           message: TOKEN_INVALID,
         };
@@ -121,18 +134,19 @@ const authService = {
         data: user,
         statusCode: 200,
         success: true,
-        message: TOKEN_VALID,
+        message: TOKEN_SUCCESS,
       };
     } catch (error) {
       return {
-        statusCode: 401,
+        statusCode: TOKEN_INVALID_CODE,
         success: false,
         message: error?.message,
       };
     }
   },
 
-  async refreshTokens({ refreshToken }) {
+  async refreshTokens(refreshToken) {
+    console.log("refreshToken :>> ", refreshToken);
     let decodedRefreshToken;
     try {
       decodedRefreshToken = verifyRefreshToken(refreshToken);
@@ -140,27 +154,28 @@ const authService = {
       throw new Error("Invalid refresh token");
     }
 
+    console.log("decodedRefreshToken :>> ", decodedRefreshToken);
+
     const existingRefreshToken = await prisma.refreshToken.findFirst({
-      where: { token: refreshToken },
-      select: {
-        account: { select: { id: true } },
-      },
+      where: { token: refreshToken, userId: decodedRefreshToken.userId },
     });
+
+    console.log("existingRefreshToken :>> ", existingRefreshToken);
 
     if (!existingRefreshToken) {
       return {
-        statusCode: 401,
+        statusCode: REFRESH_TOKEN_INVALID_CODE,
         success: false,
-        message: TOKEN_INVALID,
+        message: REFRESH_TOKEN_INVALID,
       };
     }
 
     const accessToken = generateAccessToken(existingRefreshToken.userId);
 
-    return { accessToken };
+    return accessToken;
   },
 
-  async revokeRefreshToken({ refreshToken }) {
+  async revokeRefreshToken(refreshToken) {
     const deletedToken = await prisma.refreshToken.delete({
       where: { token: refreshToken },
     });
