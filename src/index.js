@@ -4,6 +4,7 @@ import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 import authRouter from "./routes/auth.routes.js";
+import branchRouter from "./routes/branch.routes.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(morgan("combined"));
 
 // Routes
 app.use("/api/auth", authRouter);
+app.use("/api/branch", branchRouter);
 
 // Set up routes
 app.get("/", (req, res) => {

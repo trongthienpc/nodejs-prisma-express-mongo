@@ -40,19 +40,19 @@ export const verifyRefreshToken = (token) => {
 
 export const checkAuthenticated = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
+
   if (!token)
     return res
       .status(401)
       .json({ success: false, message: "Access token not found" });
 
   try {
-    const accessToken = token.split(" ")[1];
     jwt.verify(
-      accessToken,
-      process.env.ACCESS_TOKEN_SECRET,
+      token,
+      process.env.REFRESH_TOKEN_SECRET,
       function (err, decoded) {
         if (err) {
-          console.log("err.message", err.message);
+          console.log("err.message", err);
           return res.status(501).json({ success: false, message: err.message });
         } else {
           req.userId = decoded.userId;
