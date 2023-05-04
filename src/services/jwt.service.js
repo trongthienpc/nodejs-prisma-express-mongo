@@ -27,10 +27,19 @@ export const verifyAccessToken = (token) => {
 export const verifyRefreshToken = (token) => {
   try {
     // Decode the token using the refresh token secret
-    const decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    let _decodedToken = null;
+    jwt.verify(
+      token,
+      process.env.REFRESH_TOKEN_SECRET,
+      function (err, decodedToken) {
+        if (err) {
+          _decodedToken = err.name;
+        } else _decodedToken = decodedToken;
+      }
+    );
 
     // Return the decoded token
-    return decodedToken;
+    return _decodedToken;
   } catch (error) {
     // If there was an error decoding the token, log the error to the console and return null
     // console.error(error);

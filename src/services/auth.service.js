@@ -154,15 +154,17 @@ const authService = {
       throw new Error("Invalid refresh token");
     }
 
-    console.log("decodedRefreshToken :>> ", decodedRefreshToken);
+    let existingRefreshToken = null;
+    if (
+      decodedRefreshToken != null &&
+      decodedRefreshToken != "TokenExpiredError"
+    ) {
+      existingRefreshToken = await prisma.refreshToken.findFirst({
+        where: { token: refreshToken, userId: decodedRefreshToken.userId },
+      });
+    }
 
-    const existingRefreshToken = await prisma.refreshToken.findFirst({
-      where: { token: refreshToken, userId: decodedRefreshToken.userId },
-    });
-
-    console.log("existingRefreshToken :>> ", existingRefreshToken);
-
-    if (!existingRefreshToken) {
+    if (!existingRefreshToken || existingRefreshToken == null) {
       return {
         statusCode: REFRESH_TOKEN_INVALID_CODE,
         success: false,
