@@ -83,7 +83,7 @@ describe("Auth API", () => {
       // Logout the user
       const logoutResponse = await request(app)
         .post("/api/auth/logout")
-        .set("Authorization", `Bearer ${refreshToken}`)
+        .send({ userId: "6453681340d7231d3cfdc939" })
         .expect(200);
       expect(logoutResponse.body.message).toBe(LOGOUT_SUCCESS);
       // Verify that the access token has been deleted

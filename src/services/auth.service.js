@@ -10,6 +10,7 @@ import {
   REFRESH_TOKEN_INVALID,
   REFRESH_TOKEN_INVALID_CODE,
   REGISTER_SUCCESS,
+  LOGOUT_SUCCESS,
 } from "../utils/constants.js";
 import {
   generateAccessToken,
@@ -20,6 +21,17 @@ import {
 import { LOGIN_INVALID } from "../utils/constants.js";
 import { LOGIN_SUCCESS } from "../utils/constants.js";
 
+import { createClient } from "redis";
+const redisClient = createClient({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+});
+
+redisClient.on("error", (err) => console.log("Redis Client Error", err));
+redisClient.on("connect", () => {
+  console.log("Connected to Redis...");
+});
+redisClient.connect();
 const authService = {
   async registerUser({ email, password }) {
     const userExist = await prisma.account.findUnique({
@@ -56,11 +68,11 @@ const authService = {
 
   async loginUser({ email, password }) {
     // Find the user by email
-
     const user = await prisma.account.findUnique({
       where: { email: email },
     });
 
+    // If user doesn't exist, return error response
     if (!user) {
       return {
         statusCode: LOGIN_INVALID_CODE,
@@ -72,6 +84,7 @@ const authService = {
     // Check if the password is correct
     const passwordMatch = await bcrypt.compare(password, user.password);
 
+    // If password doesn't match, return error response
     if (!passwordMatch) {
       return {
         statusCode: LOGIN_INVALID_CODE,
@@ -83,29 +96,23 @@ const authService = {
     // Generate a JWT token
     const accessToken = generateAccessToken(user.id);
 
-    let refreshToken = null;
-    const existingRefreshToken = await prisma.refreshToken.findFirst({
-      where: { userId: user.id },
-    });
+    // Generate a refresh token
+    const refreshToken = generateRefreshToken(user.id);
 
-    if (existingRefreshToken) {
-      refreshToken = existingRefreshToken.token;
-      const decodedRefreshToken = verifyRefreshToken(refreshToken);
-      if (decodedRefreshToken !== null)
-        if (Date.now() >= decodedRefreshToken.exp * 1000)
-          refreshToken = generateAccessToken(user.id);
-    } else {
-      // Generate a new refresh token if one doesn't exist
-      refreshToken = generateRefreshToken(user.id);
-
-      await prisma.refreshToken.create({
-        data: {
-          token: refreshToken,
-          userId: user.id,
-        },
-      });
+    // Save refresh token in Redis with expiration time
+    try {
+      await redisClient.set(
+        user.id,
+        refreshToken,
+        "EX",
+        process.env.REFRESH_TOKEN_EXPIRATION_TIME
+      );
+    } catch (error) {
+      console.error("Error saving refresh token to Redis:", error);
+      throw new Error("Unable to save refresh token");
     }
 
+    // Return success response with tokens
     return {
       statusCode: 200,
       success: true,
@@ -177,12 +184,14 @@ const authService = {
     return accessToken;
   },
 
-  async revokeRefreshToken(refreshToken) {
-    const deletedToken = await prisma.refreshToken.delete({
-      where: { token: refreshToken },
-    });
+  async revokeRefreshToken(userId) {
+    await redisClient.del(userId);
 
-    return !!deletedToken;
+    return {
+      statusCode: 200,
+      success: true,
+      message: LOGOUT_SUCCESS,
+    };
   },
 };
 

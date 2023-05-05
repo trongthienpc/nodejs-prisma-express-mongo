@@ -69,13 +69,13 @@ export const logout = async (req, res, next) => {
   try {
     // const { refreshToken } = req.body;
     const token = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
-
+    const { userId } = req.body;
     if (!token || token === "invalid_token") {
       return res.status(401).json({ message: TOKEN_INVALID });
     }
 
     // Call authService to revoke refresh token
-    await authService.revokeRefreshToken(token);
+    await authService.revokeRefreshToken(userId);
     res.status(200).send({ message: LOGOUT_SUCCESS });
   } catch (error) {
     console.log("Error :>> ", error);
