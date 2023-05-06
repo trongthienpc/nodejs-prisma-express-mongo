@@ -79,11 +79,11 @@ describe("Auth API", () => {
         .post("/api/auth/login")
         .send({ email: "test@example.com", password: "password" })
         .expect(200);
-      const { refreshToken } = response.body.data;
+      const { accessToken } = response.body.data;
       // Logout the user
       const logoutResponse = await request(app)
         .post("/api/auth/logout")
-        .send({ userId: "6453681340d7231d3cfdc939" })
+        .set("Authorization", "Bearer " + accessToken)
         .expect(200);
       expect(logoutResponse.body.message).toBe(LOGOUT_SUCCESS);
       // Verify that the access token has been deleted
@@ -124,7 +124,6 @@ describe("Auth API", () => {
 
       expect(refreshResponse.body.message).toBe(REFRESH_TOKEN_SUCCESS);
 
-      console.log("refreshResponse.body.data :>> ", refreshResponse.body);
       // Verify that the new access token is different from the old access token
       expect(refreshResponse.body.data).not.toBe(accessToken);
     });

@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, header } from "express-validator";
 
 export const authValidationRules = {
   register: [
@@ -8,6 +8,6 @@ export const authValidationRules = {
     // body("lastName").notEmpty(),
   ],
   login: [body("email").isEmail(), body("password").notEmpty()],
-  logout: [body("refreshToken").notEmpty()],
+  logout: [header("Authorization").notEmpty()],
   refresh: [body("refreshToken").notEmpty()],
 };
