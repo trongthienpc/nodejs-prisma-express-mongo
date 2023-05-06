@@ -1,12 +1,11 @@
-
 import jwt from "jsonwebtoken";
-import { generateResponseObject } from "../utils/patterns/response-pattern";
+import { generateResponseObject } from "../utils/patterns/response-pattern.js";
 import {
   REFRESH_TOKEN_INVALID,
   REFRESH_TOKEN_SUCCESS,
   TOKEN_INVALID,
   TOKEN_SUCCESS,
-} from "../utils/constants";
+} from "../utils/constants.js";
 
 /**
  * Generates an access token for a given user ID
@@ -96,4 +95,3 @@ export const checkAuthenticated = (req, res, next) => {
     return res.status(403).json({ success: false, message: "Invalid token" });
   }
 };
-

@@ -5,11 +5,52 @@ import {
   REFRESH_TOKEN_SUCCESS,
   TOKEN_INVALID,
 } from "../utils/constants.js";
-import {
-  LOGIN_ERROR_CODE,
-  LOGIN_INVALID,
-  LOGIN_MISSING_CODE,
-} from "../utils/constants.js";
+import { LOGIN_INVALID, LOGIN_INVALID_CODE } from "../utils/constants.js";
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           format: password
+ *           minLength: 8
+ *     Credentials:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           format: password
+ *     RefreshToken:
+ *       type: object
+ *       required:
+ *         - refreshToken
+ *       properties:
+ *         refreshToken:
+ *           type: string
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: Authentication APIs
+ */
 
 /**
  * @swagger
@@ -131,7 +172,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password)
     return res
-      .status(LOGIN_MISSING_CODE)
+      .status(LOGIN_INVALID_CODE)
       .json({ status: false, message: LOGIN_INVALID });
   try {
     const response = await authService.loginUser({ email, password });
@@ -142,7 +183,7 @@ export const login = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    return res.status(LOGIN_ERROR_CODE).json({ error: err.message });
+    return res.status(LOGIN_INVALID_CODE).json({ error: err.message });
   }
 };
 

@@ -35,7 +35,10 @@
     "prisma": "^4.13.0",
     "redis": "^4.6.6",
     "supertest": "^6.3.3",
-    "uuid": "^9.0.0"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3",
+    "uuid": "^9.0.0",
+    "yaml": "^2.2.2"
   },
   "devDependencies": {
     "bcryptjs": "^2.4.3"
