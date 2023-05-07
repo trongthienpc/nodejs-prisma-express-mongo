@@ -12,6 +12,32 @@ const authRouter = express.Router();
 
 /**
  * @swagger
+ * tags: 
+ *    name: Authentication
+ *    description: API for managing authentication.
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - username
+ *         - email
+ *         - password
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: username of user
+ *         email:
+ *           type: string
+ *           description: email of user
+ *         password:
+ *           type: string
+ *           description: password of user
+ *           example: "mySuperSecretPassword123"
+ */
+
+/**
+ * @swagger
  * /register:
  *   post:
  *     tags:
@@ -51,7 +77,7 @@ authRouter.post("/register", validate(authValidationRules.register), register);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Credentials'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: Logged in
@@ -82,7 +108,7 @@ authRouter.post("/login", validate(authValidationRules.login), login);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/RefreshToken'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: Access token refreshed
@@ -113,7 +139,7 @@ authRouter.post("/refresh", validate(authValidationRules.refresh), refresh);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/RefreshToken'
+ *             $ref: '#/components/schemas/user'
  *     responses:
  *       200:
  *         description: Logged out

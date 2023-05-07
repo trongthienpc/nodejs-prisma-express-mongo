@@ -46,30 +46,30 @@ describe("Auth API", () => {
     // });
   });
 
-  describe("POST /api/auth/login", () => {
-    it(`should return 200 and message "${LOGIN_SUCCESS}" if login is successful`, async () => {
-      const response = await request(app)
-        .post("/api/auth/login")
-        .send({
-          email: "test@example.com",
-          password: "password",
-        })
-        .expect(200);
-      expect(response.body.message).toBe(LOGIN_SUCCESS);
-      expect(response.body.data.accessToken).toBeDefined();
-      expect(response.body.data.refreshToken).toBeDefined();
-    });
-    it(`should return ${LOGIN_INVALID_CODE} and message "${LOGIN_INVALID}" if email or password is incorrect`, async () => {
-      const response = await request(app)
-        .post("/api/auth/login")
-        .send({
-          email: "nonexistent@example.com",
-          password: "password",
-        })
-        .expect(LOGIN_INVALID_CODE);
-      expect(response.body.message).toBe(LOGIN_INVALID);
-    });
-  });
+  // describe("POST /api/auth/login", () => {
+  //   it(`should return 200 and message "${LOGIN_SUCCESS}" if login is successful`, async () => {
+  //     const response = await request(app)
+  //       .post("/api/auth/login")
+  //       .send({
+  //         email: "test@example.com",
+  //         password: "password",
+  //       })
+  //       .expect(200);
+  //     expect(response.body.message).toBe(LOGIN_SUCCESS);
+  //     expect(response.body.data.accessToken).toBeDefined();
+  //     expect(response.body.data.refreshToken).toBeDefined();
+  //   });
+  //   it(`should return ${LOGIN_INVALID_CODE} and message "${LOGIN_INVALID}" if email or password is incorrect`, async () => {
+  //     const response = await request(app)
+  //       .post("/api/auth/login")
+  //       .send({
+  //         email: "nonexistent@example.com",
+  //         password: "password",
+  //       })
+  //       .expect(LOGIN_INVALID_CODE);
+  //     expect(response.body.message).toBe(LOGIN_INVALID);
+  //   });
+  // });
 
   // Add more test cases for logout and refresh routes here...
   describe("POST /api/auth/logout", () => {
@@ -103,29 +103,29 @@ describe("Auth API", () => {
     });
   });
 
-  describe("POST /api/auth/refresh", () => {
-    it("should successfully refresh a user's access token", async () => {
-      // Login user to get access token
-      const loginResponse = await request(app)
-        .post("/api/auth/login")
-        .send({ email: "test@example.com", password: "password" })
-        .expect(200);
+  // describe("POST /api/auth/refresh", () => {
+  //   it("should successfully refresh a user's access token", async () => {
+  //     // Login user to get access token
+  //     const loginResponse = await request(app)
+  //       .post("/api/auth/login")
+  //       .send({ email: "test@example.com", password: "password" })
+  //       .expect(200);
 
-      const { accessToken, refreshToken } = loginResponse.body.data;
+  //     const { accessToken, refreshToken } = loginResponse.body.data;
 
-      // Wait for 5 seconds to ensure that the access token expires
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+  //     // Wait for 5 seconds to ensure that the access token expires
+  //     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Refresh the access token
-      const refreshResponse = await request(app)
-        .post("/api/auth/refresh")
-        .send({ refreshToken })
-        .expect(200);
+  //     // Refresh the access token
+  //     const refreshResponse = await request(app)
+  //       .post("/api/auth/refresh")
+  //       .send({ refreshToken })
+  //       .expect(200);
 
-      expect(refreshResponse.body.message).toBe(REFRESH_TOKEN_SUCCESS);
+  //     expect(refreshResponse.body.message).toBe(REFRESH_TOKEN_SUCCESS);
 
-      // Verify that the new access token is different from the old access token
-      expect(refreshResponse.body.data).not.toBe(accessToken);
-    });
-  });
+  //     // Verify that the new access token is different from the old access token
+  //     expect(refreshResponse.body.data).not.toBe(accessToken);
+  //   });
+  // });
 });

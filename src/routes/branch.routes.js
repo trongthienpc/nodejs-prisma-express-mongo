@@ -6,6 +6,24 @@ const router = express.Router();
  * tags:
  *   name: Branches
  *   description: API for managing branches.
+ *
+ * components:
+ *   schemas:
+ *     Branch:
+ *       type: object
+ *       required:
+ *         - name
+ *         - location
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: Auto-generated id of the branch
+ *         name:
+ *           type: string
+ *           description: Name of the branch
+ *         location:
+ *           type: string
+ *           description: Location of the branch
  */
 
 /**

@@ -26,7 +26,7 @@ const options = {
     },
     servers: [{ url: "http://localhost:4000" }],
   },
-  apis: ["./routes/branch.routes.js"],
+  apis: ["./src/routes/*.routes.js"],
 };
 
 // Routes
@@ -40,9 +40,9 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
+// const PORT = process.env.PORT || 4000;
+// app.listen(PORT, () => {
+//   console.log(`Server started on port ${PORT}`);
+// });
 
 export default app;
