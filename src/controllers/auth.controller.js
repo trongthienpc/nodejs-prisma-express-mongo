@@ -5,11 +5,7 @@ import {
   REFRESH_TOKEN_SUCCESS,
   TOKEN_INVALID,
 } from "../utils/constants.js";
-import {
-  LOGIN_ERROR_CODE,
-  LOGIN_INVALID,
-  LOGIN_MISSING_CODE,
-} from "../utils/constants.js";
+import { LOGIN_INVALID } from "../utils/constants.js";
 
 /**
  * @swagger
@@ -183,7 +179,7 @@ export const login = async (req, res) => {
 export const refresh = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
-    const token = await authService.refreshTokens(refreshToken);
+    const token = authService.refreshTokens(refreshToken);
     res
       .status(200)
       .json({ success: true, message: REFRESH_TOKEN_SUCCESS, data: token });
