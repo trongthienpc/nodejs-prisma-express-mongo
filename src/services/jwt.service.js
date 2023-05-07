@@ -77,19 +77,15 @@ export const checkAuthenticated = (req, res, next) => {
       .json({ success: false, message: "Access token not found" });
 
   try {
-    jwt.verify(
-      token,
-      process.env.REFRESH_TOKEN_SECRET,
-      function (err, decoded) {
-        if (err) {
-          console.log("err.message", err);
-          return res.status(501).json({ success: false, message: err.message });
-        } else {
-          req.userId = decoded.userId;
-          next();
-        }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+      if (err) {
+        console.log("err.message", err);
+        return res.status(501).json({ success: false, message: err.message });
+      } else {
+        req.userId = decoded.userId;
+        next();
       }
-    );
+    });
   } catch (e) {
     console.log(error);
     return res.status(403).json({ success: false, message: "Invalid token" });

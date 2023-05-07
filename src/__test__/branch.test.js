@@ -11,11 +11,11 @@ describe("BRANCH API", () => {
         .post("/api/auth/login")
         .send({ email: "test@example.com", password: "password" })
         .expect(200);
-      const { refreshToken } = response.body.data;
-      console.log("refreshToken :>> ", refreshToken);
+      const { accessToken } = response.body.data;
+
       const res = await request(app)
         .post("/api/branch")
-        .set("Authorization", `Bearer ${refreshToken}`)
+        .set("Authorization", `Bearer ${accessToken}`)
         .send({ name: "Test Branch", address: "123 Test Street" })
         .expect(OK);
 
