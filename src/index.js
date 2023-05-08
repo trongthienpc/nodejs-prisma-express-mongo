@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
 import authRouter from "./routes/auth.routes.js";
 import branchRouter from "./routes/branch.routes.js";
 
@@ -15,7 +17,22 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("combined"));
 
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Swagger Documentation",
+      version: "1.0.0",
+      description: "This is a sample API",
+    },
+    servers: [{ url: "http://localhost:4000" }],
+  },
+  apis: ["./src/routes/*.routes.js"],
+};
+
 // Routes
+const specs = swaggerJSDoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/api/auth", authRouter);
 app.use("/api/branch", branchRouter);
 

@@ -1,246 +1,128 @@
 // Import necessary modules
-import authService from "../services/auth.service.js";
+// This block of code seems to be okay and has no known issues - no changes needed
+import authService from "../services/auth.service.js"; // import the authentication service module
 import {
+  BAD_REQUEST,
   LOGOUT_SUCCESS,
+  REFRESH_TOKEN_INVALID,
   REFRESH_TOKEN_SUCCESS,
-  TOKEN_INVALID,
-} from "../utils/constants.js";
-import { LOGIN_INVALID } from "../utils/constants.js";
+  UNAUTHORIZED,
+} from "../utils/constants.js"; // import constant values that will be used throughout the module
+import { TOKEN_INVALID } from "../utils/constants.js";
+import { generateResponseObject } from "../utils/patterns/response-pattern.js"; // import a function that will generate a response object
 
-/**
- * @swagger
- * /register:
- *   post:
- *     summary: Register a new user
- *     tags:
- *       - Authentication
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *             required:
- *               - email
- *               - password
- *     responses:
- *       200:
- *         description: User registration successful
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 message:
- *                   type: string
- *                 data:
- *                   type: object
- *       400:
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: boolean
- *                 message:
- *                   type: string
- *
- */
+// Defines a function to register a user
 export const register = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body; // extract email and password from the request body
 
-  if (!email || !password)
+  // Validate required parameters: if no email or password, send back a 400 status code with an error message
+  if (!email || !password) {
     return res
-      .status(400)
-      .json({ status: false, message: "Missing email address // or password" });
+      .status(BAD_REQUEST)
+      .json(generateResponseObject(false, "Missing email address or password"));
+  }
 
   try {
-    const response = await authService.registerUser({ email, password });
+    const response = await authService.registerUser({ email, password }); // register the user by calling the authentication service
 
-    return res.status(response.statusCode).json({
-      success: response.success,
-      message: response.message,
-      data: response?.data,
-    });
+    // Respond with the status code, message, and any data retrieved from the API
+    return res
+      .status(response.statusCode)
+      .json(
+        generateResponseObject(
+          response.success,
+          response.message,
+          response?.data
+        )
+      ); // return a response object with specified data
   } catch (error) {
-    console.error(error);
-    return res.status(400).json({ error: error.message });
-  }
-};
-
-/**
- * @swagger
- * /login:
- *   post:
- *     summary: Login a user
- *     tags:
- *       - Authentication
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *             required:
- *               - email
- *               - password
- *     responses:
- *       200:
- *         description: User login successful
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 message:
- *                   type: string
- *                 data:
- *                   type: object
- *       400:
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *
- */
-export const login = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password)
+    console.error(error); // log any errors
     return res
-      .status(LOGIN_MISSING_CODE)
-      .json({ status: false, message: LOGIN_INVALID });
-  try {
-    const response = await authService.loginUser({ email, password });
-    return res.status(response.statusCode).json({
-      success: response.status,
-      message: response.message,
-      data: response?.data,
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(LOGIN_ERROR_CODE).json({ error: err.message });
+      .status(BAD_REQUEST)
+      .json(generateResponseObject(false, error.message)); // send back a 400 status code with an error message
   }
 };
 
-/**
- * @swagger
- * /refresh:
- *   post:
- *     summary: Refresh user token
- *     tags:
- *       - Authentication
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               refreshToken:
- *                 type: string
- *             required:
- *               - refreshToken
- *     responses:
- *       200:
- *         description: Token refresh successful
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 message:
- *                   type: string
- *                 data:
- *                   type: object
- *
- */
+// Defines a function to log in a user
+export const login = async (req, res) => {
+  const { email, password } = req.body; // extract email and password from the request body
+
+  // Validate required parameters: if no email or password, send back a 400 status code with an error message
+  if (!email || !password) {
+    return res
+      .status(BAD_REQUEST)
+      .json(generateResponseObject(false, "Missing email address or password"));
+  }
+
+  try {
+    const response = await authService.loginUser({ email, password }); // log the user in by calling the authentication service
+
+    // Respond with the status code, message, and any data retrieved from the API
+    return res
+      .status(response.statusCode)
+      .json(
+        generateResponseObject(
+          response.success,
+          response.message,
+          response?.data
+        )
+      ); // return a response object with specified data
+  } catch (err) {
+    console.error(err); // log any errors
+    return res
+      .status(BAD_REQUEST)
+      .json(generateResponseObject(false, err.message)); // send back a 400 status code with an error message
+  }
+};
+
+// Defines a function to refresh a user's access token
 export const refresh = async (req, res, next) => {
   try {
-    const { refreshToken } = req.body;
-    const token = authService.refreshTokens(refreshToken);
-    res
+    const { refreshToken } = req.body; // extract refresh token from the request body
+    const token = authService.refreshTokens(refreshToken); // refresh the access token by calling the authentication service
+
+    if (!token) {
+      // if no token is returned, send back a 400 status code with an error message
+      return res
+        .status(BAD_REQUEST)
+        .json(generateResponseObject(false, REFRESH_TOKEN_INVALID));
+    }
+
+    // Send back success response with the new token
+    return res
       .status(200)
-      .json({ success: true, message: REFRESH_TOKEN_SUCCESS, data: token });
+      .json(generateResponseObject(true, REFRESH_TOKEN_SUCCESS, token)); // return a response object with success message and new token
   } catch (error) {
-    next(error);
+    next(error); // pass the error to the next middleware
   }
 };
 
-/**
- * @swagger
- * /logout:
- *   post:
- *     summary: Logout a user
- *     tags:
- *       - Authentication
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               userId:
- *                 type: string
- *             required:
- *               - userId
- *     responses:
- *       200:
- *         description: User logout successful
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *       401:
- *         description: Unauthorized
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *
- */
+// Defines a function for logging out a user
 export const logout = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
+    const token = req.headers.authorization?.split(" ")[1]; // extract token from Authorization header
     const { userId } = req.body;
+    console.log(" token", token);
 
-    if (!token || token === "invalid_token") {
-      return res.status(401).json({ message: TOKEN_INVALID });
+    // Check if the token is present and valid: if an invalid token is provided, send back a 401 status code with an error message
+    if (
+      !token ||
+      token == "invalid_token" ||
+      typeof token !== "string" ||
+      !authService.verifyToken(token)
+    ) {
+      return res
+        .status(UNAUTHORIZED)
+        .json(generateResponseObject(false, TOKEN_INVALID));
     }
 
     // Call authService to revoke refresh token
-    await authService.revokeRefreshToken(token);
-    res.status(200).send({ message: LOGOUT_SUCCESS });
+    await authService.revokeRefreshToken(token); // revoke the refresh token by calling the authentication service
+
+    // Send response indicating successful logout, return a response object with success message
+    return res.status(200).json(generateResponseObject(true, LOGOUT_SUCCESS));
   } catch (error) {
-    console.log("Error :>> ", error);
-    next(error);
+    console.log("Error :>> ", error); // log any errors
+    next(error); // pass the error to the next middleware
   }
 };
