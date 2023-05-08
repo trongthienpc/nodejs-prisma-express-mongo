@@ -1,10 +1,12 @@
 import jwt from "jsonwebtoken";
 import { generateResponseObject } from "../utils/patterns/response-pattern.js";
 import {
+  FORBIDDEN,
   REFRESH_TOKEN_INVALID,
   REFRESH_TOKEN_SUCCESS,
   TOKEN_INVALID,
   TOKEN_SUCCESS,
+  UNAUTHORIZED,
 } from "../utils/constants.js";
 
 /**
@@ -69,14 +71,13 @@ export const verifyRefreshToken = (token) => {
  * @returns {object} - The response object indicating success or failure
  */
 export const checkAuthenticated = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
-  if (!token)
+  const accessToken = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
+  if (!accessToken)
     return res
-      .status(401)
+      .status(UNAUTHORIZED)
       .json({ success: false, message: "Access token not found" });
 
   try {
-    const accessToken = token.split(" ")[1];
     jwt.verify(
       accessToken,
       process.env.ACCESS_TOKEN_SECRET,
@@ -91,7 +92,7 @@ export const checkAuthenticated = (req, res, next) => {
       }
     );
   } catch (e) {
-    console.log(error);
-    return res.status(403).json({ success: false, message: "Invalid token" });
+    console.log(e);
+    return res.status(FORBIDDEN).json({ success: false, message: e?.message });
   }
 };
