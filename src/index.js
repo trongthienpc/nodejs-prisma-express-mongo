@@ -6,6 +6,7 @@ import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import authRouter from "./routes/auth.routes.js";
+import branchRouter from "./routes/branch.routes.js";
 
 const app = express();
 
@@ -33,6 +34,7 @@ const options = {
 const specs = swaggerJSDoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/api/auth", authRouter);
+app.use("/api/branch", branchRouter);
 
 // Set up routes
 app.get("/", (req, res) => {

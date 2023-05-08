@@ -1,6 +1,12 @@
 import express from "express";
 const router = express.Router();
-
+import {
+  create,
+  getAll,
+  read,
+  remove,
+  update,
+} from "../controllers/branch.controller.js";
 /**
  * @swagger
  * tags:
@@ -49,7 +55,7 @@ const router = express.Router();
  *       "500":
  *         description: Internal server error
  */
-router.post("/", branchController.createBranch);
+router.post("/", create);
 
 /**
  * @swagger
@@ -69,7 +75,7 @@ router.post("/", branchController.createBranch);
  *       "500":
  *         description: Internal server error
  */
-router.get("/", branchController.getAllBranches);
+router.get("/", getAll);
 
 /**
  * @swagger
@@ -96,7 +102,7 @@ router.get("/", branchController.getAllBranches);
  *       "500":
  *         description: Internal server error
  */
-router.get("/:id", branchController.getBranchById);
+router.get("/:id", read);
 
 /**
  * @swagger
@@ -128,7 +134,7 @@ router.get("/:id", branchController.getBranchById);
  *       "500":
  *         description: Internal server error
  */
-router.put("/:id", branchController.updateBranchById);
+router.put("/:id", update);
 
 /**
  * @swagger
@@ -151,6 +157,6 @@ router.put("/:id", branchController.updateBranchById);
  *       "500":
  *         description: Internal server error
  */
-router.delete("/:id", branchController.deleteBranchById);
+router.delete("/:id", remove);
 
 export default router;
