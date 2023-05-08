@@ -6,10 +6,11 @@ import {
   LOGOUT_SUCCESS,
   REFRESH_TOKEN_INVALID,
   REFRESH_TOKEN_SUCCESS,
+  TOKEN_INVALID,
   UNAUTHORIZED,
-} from "../utils/constants.js"; // import constant values that will be used throughout the module
-import { TOKEN_INVALID } from "../utils/constants.js";
-import { generateResponseObject } from "../utils/patterns/response-pattern.js"; // import a function that will generate a response object
+} from "../utils/constants.js";
+import { LOGIN_INVALID } from "../utils/constants.js";
+import { generateResponseObject } from "../utils/patterns/response-pattern.js";
 
 // Defines a function to register a user
 export const register = async (req, res) => {
@@ -78,18 +79,9 @@ export const login = async (req, res) => {
 // Defines a function to refresh a user's access token
 export const refresh = async (req, res, next) => {
   try {
-    const { refreshToken } = req.body; // extract refresh token from the request body
-    const token = authService.refreshTokens(refreshToken); // refresh the access token by calling the authentication service
-
-    if (!token) {
-      // if no token is returned, send back a 400 status code with an error message
-      return res
-        .status(BAD_REQUEST)
-        .json(generateResponseObject(false, REFRESH_TOKEN_INVALID));
-    }
-
-    // Send back success response with the new token
-    return res
+    const { refreshToken } = req.body;
+    const token = authService.refreshTokens(refreshToken);
+    res
       .status(200)
       .json(generateResponseObject(true, REFRESH_TOKEN_SUCCESS, token)); // return a response object with success message and new token
   } catch (error) {

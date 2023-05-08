@@ -160,24 +160,26 @@ const authService = {
       const decodedToken = verifyAccessToken(token);
       if (decodedToken?.success) {
         const userId = decodedToken?.data?.useId;
-        const user = await prisma.user.findUnique({
-          where: { id: userId },
-        });
+        if (userId && userId.length > 0) {
+          const user = await prisma.user.findUnique({
+            where: { id: userId },
+          });
 
-        if (!user) {
+          if (!user) {
+            return {
+              statusCode: TOKEN_INVALID_CODE,
+              success: false,
+              message: TOKEN_INVALID,
+            };
+          }
+
           return {
-            statusCode: TOKEN_INVALID_CODE,
-            success: false,
-            message: TOKEN_INVALID,
+            data: user,
+            statusCode: 200,
+            success: true,
+            message: TOKEN_SUCCESS,
           };
         }
-
-        return {
-          data: user,
-          statusCode: 200,
-          success: true,
-          message: TOKEN_SUCCESS,
-        };
       } else {
         return {
           statusCode: TOKEN_INVALID_CODE,
