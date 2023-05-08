@@ -18,19 +18,20 @@ export const createBranch = async (branch) => {
 export const getBranch = async (id) => {
   const branch = await prisma.branch.findUnique({
     where: {
-      id: parseInt(id),
+      id: id,
     },
     include: {
       warehouses: true,
     },
   });
+
   return branch;
 };
 
 export const updateBranch = async (id, branch) => {
   const updatedBranch = await prisma.branch.update({
     where: {
-      id: parseInt(id),
+      id: id,
     },
     data: {
       name: branch.name,
@@ -43,7 +44,7 @@ export const updateBranch = async (id, branch) => {
 export const deleteBranch = async (id) => {
   const deletedBranch = await prisma.branch.delete({
     where: {
-      id: parseInt(id),
+      id: id,
     },
   });
   if (deletedBranch === null) {
