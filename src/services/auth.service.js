@@ -158,25 +158,35 @@ const authService = {
   async verifyToken(token) {
     try {
       const decodedToken = verifyAccessToken(token);
-      const userId = decodedToken.userId;
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-      });
+      if (decodedToken?.success) {
+        const userId = decodedToken?.data?.useId;
+        if (userId && userId.length > 0) {
+          const user = await prisma.user.findUnique({
+            where: { id: userId },
+          });
 
-      if (!user) {
+          if (!user) {
+            return {
+              statusCode: TOKEN_INVALID_CODE,
+              success: false,
+              message: TOKEN_INVALID,
+            };
+          }
+
+          return {
+            data: user,
+            statusCode: 200,
+            success: true,
+            message: TOKEN_SUCCESS,
+          };
+        }
+      } else {
         return {
           statusCode: TOKEN_INVALID_CODE,
           success: false,
           message: TOKEN_INVALID,
         };
       }
-
-      return {
-        data: user,
-        statusCode: 200,
-        success: true,
-        message: TOKEN_SUCCESS,
-      };
     } catch (error) {
       console.error("Error verifying token:", error);
       return {
@@ -199,6 +209,8 @@ const authService = {
       if (!decodedRefreshToken) {
         throw new Error("Invalid refresh token");
       }
+
+      console.log("decodedRefreshToken", decodedRefreshToken);
 
       const existingRefreshToken = await prisma.refreshToken.findFirst({
         where: { token: refreshToken, userId: decodedRefreshToken.userId },
