@@ -7,6 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import authRouter from "./routes/auth.routes.js";
 import branchRouter from "./routes/branch.routes.js";
+import groupRouter from "./routes/group/group.routes.js"
 
 const app = express();
 
@@ -35,6 +36,7 @@ const specs = swaggerJSDoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/api/auth", authRouter);
 app.use("/api/branch", branchRouter);
+app.use("/api/group", groupRouter);
 
 // Set up routes
 app.get("/", (req, res) => {

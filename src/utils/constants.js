@@ -48,3 +48,22 @@ export const FORBIDDEN = 403;
 export const NOT_FOUND = 404;
 export const CONFLICT = 409;
 export const SERVER_ERROR = 500;
+
+
+
+// GROUP CONSTANTS
+export const CREATE_GROUP_SUCCESS = "Group created successfully";
+export const CREATE_GROUP_FAILURE = "Failed to create group";
+
+export const GET_ALL_GROUPS_SUCCESS = "Fetched all groups successfully";
+export const GET_ALL_GROUPS_FAILURE = "Failed to fetch groups";
+
+export const GET_GROUP_SUCCESS = "Fetched group successfully";
+export const GET_GROUP_FAILURE = "Failed to fetch group";
+
+export const UPDATE_GROUP_SUCCESS = "Group updated successfully";
+export const UPDATE_GROUP_FAILURE = "Failed to update group";
+
+export const DELETE_GROUP_SUCCESS = "Group deleted successfully";
+export const DELETE_GROUP_FAILURE = "Failed to delete group";
+
