@@ -42,7 +42,7 @@ describe("Customer CRUD operations", () => {
     // Define some test input data with an email that already exists in the database
     const testData = {
       name: "Jane Doe",
-      email: "johndoe@example.com",
+      email: "janedoe@example.com",
       phone: "0987654321",
     };
 
@@ -51,12 +51,14 @@ describe("Customer CRUD operations", () => {
       .set("Authorization", "Bearer " + accessToken)
       .send(testData);
 
+    console.log("res.body", res.body);
+
     // Check that the result is an error response object
     expect(res.body.success).toBe(false);
     expect(res.body.message).toBe("Email or phone is already registered");
 
     // Check that the result contains the existing customer
-    expect(result.data.email).toBe(testData.email);
+    expect(res.body?.data[0]?.email).toBe(testData.email);
   });
 
   // Test case for retrieving all customers
@@ -71,14 +73,14 @@ describe("Customer CRUD operations", () => {
   it("should return an array of all customers in the database", async () => {
     // Create some test customers
     const customer1 = {
-      name: "John Doe",
-      email: "johndoe@example.com",
-      phone: "1234567890",
+      name: "John Doe 1",
+      email: "johndoe1@example.com",
+      phone: "1234567891",
     };
     const customer2 = {
-      name: "Jane Doe",
-      email: "janedoe@example.com",
-      phone: "0987654321",
+      name: "Jane Doe 1",
+      email: "janedoe1@example.com",
+      phone: "0987654322",
     };
 
     await request(app)
@@ -95,12 +97,17 @@ describe("Customer CRUD operations", () => {
       .get("/api/customers")
       .set("Authorization", `Bearer ${accessToken}`);
 
+    console.log("res".body, res.body);
+
     // Check that the result is an array
     expect(Array.isArray(res.body.data)).toBe(true);
 
     // Check that the result contains the test customers
-    expect(res.body.data).toContainEqual(customer1);
-    expect(res.body.data).toContainEqual(customer2);
+    // Check that the email property of each object in the result array is equal to 'johndoe1@example.com'
+    const obj1 = res.body.data.filter((obj) => obj.email === customer1.email);
+    expect(obj1[0].email).toBe(customer1.email);
+    const obj2 = res.body.data.filter((obj) => obj.email === customer2.email);
+    expect(obj2[0].email).toBe(customer2.email);
   });
 
   // Test case for retrieving a specific customer
@@ -119,8 +126,8 @@ describe("Customer CRUD operations", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .send({
         name: "Jane Doe",
-        email: "janedoe@example.com",
-        phone: "0987654321",
+        email: "janedoe2@example.com",
+        phone: "0987654323",
       });
 
     console.log("customerId", customerId);

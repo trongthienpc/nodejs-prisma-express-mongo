@@ -21,8 +21,6 @@ const customerService = {
       },
     });
 
-    console.log("existingCustomer", existingCustomer);
-
     if (existingCustomer.length > 0) {
       return generateResponseObject(
         false,

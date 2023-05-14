@@ -17,6 +17,8 @@ export const create = async (req, res) => {
   try {
     const response = await customerService.create(req.body); // Creating a new customer based on request body
 
+    console.log("response", response);
+
     if (response.success) {
       res.status(200).json(
         generateResponseObject(true, CREATE_CUSTOMER_SUCCESS, response.data) // Sending success response with newly created customer object
@@ -24,7 +26,7 @@ export const create = async (req, res) => {
     } else
       res
         .status(500)
-        .json(generateResponseObject(false, res.message, res.data));
+        .json(generateResponseObject(false, response.message, response.data));
   } catch (error) {
     console.log("error.message", error.message);
     res.status(500).json({ message: error.message }); // Sending error response
