@@ -1,26 +1,39 @@
 import prisma from "../../lib/prisma.js";
+import { CREATE_CUSTOMER_SUCCESS } from "../../utils/constants.js";
 import { generateResponseObject } from "../../utils/patterns/response-pattern.js";
 import { createAliasString } from "../../utils/stringHelper.js";
 
 // Defining CRUD operations for model customer
 const customerService = {
   // Create a new customer
-
   create: async (data) => {
     const alias = data?.name ? createAliasString(data?.name) : "";
-    const existingCustomer = await prisma.customer.findUnique({
+    const existingCustomer = await prisma.customer.findMany({
       where: {
-        name: data.name,
+        OR: [
+          {
+            phone: data.phone,
+          },
+          {
+            email: data.email,
+          },
+        ],
       },
     });
 
-    if (existingCustomer) {
-      return generateResponseObject(false, "");
+    console.log("existingCustomer", existingCustomer);
+
+    if (existingCustomer.length > 0) {
+      return generateResponseObject(
+        false,
+        "Email or phone is already registered",
+        existingCustomer
+      );
     } else {
       const newItem = await prisma.customer.create({
         data: { ...data, alias: alias },
       });
-      return generateResponseObject(true, CREATE_WAREHOUSE_SUCCESS, newItem);
+      return generateResponseObject(true, CREATE_CUSTOMER_SUCCESS, newItem);
     }
   },
 
@@ -54,6 +67,28 @@ const customerService = {
     return await prisma.customer.delete({
       where: {
         id,
+      },
+    });
+  },
+
+  // Find a customer by phone
+  findByPhone: async (phone) => {
+    return await prisma.customer.findUnique({
+      where: {
+        phone,
+      },
+    });
+  },
+
+  // Find a customer by phone or name or email
+  search: async (searchTerm) => {
+    return await prisma.customer.findMany({
+      where: {
+        OR: [
+          { phone: { contains: searchTerm } },
+          { name: { contains: searchTerm } },
+          { email: { contains: searchTerm } },
+        ],
       },
     });
   },
