@@ -50,7 +50,7 @@ describe("Warehouse CRUD operations", () => {
       .get("/api/warehouses")
       .set("Authorization", `Bearer ${accessToken}`);
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toBeInstanceOf(Array);
+    expect(res.body.data).toBeInstanceOf(Array);
   });
 
   // Test case for retrieving a specific warehouse
@@ -59,7 +59,7 @@ describe("Warehouse CRUD operations", () => {
       .get(`/api/warehouses/${warehouseId}`)
       .set("Authorization", `Bearer ${accessToken}`);
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty("id", warehouseId);
+    expect(res.body.data).toHaveProperty("id", warehouseId);
   });
 
   // Test case for updating a warehouse
