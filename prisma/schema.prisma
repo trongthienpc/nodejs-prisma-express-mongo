@@ -100,7 +100,7 @@ model Customer {
   name         String
   alias        String?
   email        String        @unique
-  phone        String
+  phone        String        @unique
   address      Address?
   orders       Order[]
   appointments Appointment[]

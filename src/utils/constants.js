@@ -1,4 +1,3 @@
-
 // Login
 export const LOGIN_SUCCESS = "Login succeeded";
 export const LOGIN_INVALID = "Invalid email or password";
@@ -49,8 +48,6 @@ export const NOT_FOUND = 404;
 export const CONFLICT = 409;
 export const SERVER_ERROR = 500;
 
-
-
 // GROUP CONSTANTS
 export const CREATE_GROUP_SUCCESS = "Group created successfully";
 export const CREATE_GROUP_FAILURE = "Failed to create group";
@@ -67,7 +64,6 @@ export const UPDATE_GROUP_FAILURE = "Failed to update group";
 export const DELETE_GROUP_SUCCESS = "Group deleted successfully";
 export const DELETE_GROUP_FAILURE = "Failed to delete group";
 
- 
 // CRUD WAREHOUSE CONSTANTS
 export const CREATE_WAREHOUSE_SUCCESS = "Warehouse created successfully";
 export const CREATE_WAREHOUSE_FAILURE = "Failed to create warehouse";
@@ -83,3 +79,19 @@ export const UPDATE_WAREHOUSE_FAILURE = "Failed to update warehouse";
 
 export const DELETE_WAREHOUSE_SUCCESS = "Warehouse deleted successfully";
 export const DELETE_WAREHOUSE_FAILURE = "Failed to delete warehouse";
+
+// CRUD CUSTOMER CONSTANTS
+export const CREATE_CUSTOMER_SUCCESS = "Customer created successfully";
+export const CREATE_CUSTOMER_FAILURE = "Failed to create customer";
+
+export const GET_ALL_CUSTOMERS_SUCCESS = "Fetched all customers successfully";
+export const GET_ALL_CUSTOMERS_FAILURE = "Failed to fetch customers";
+
+export const GET_CUSTOMER_SUCCESS = "Fetched customer successfully";
+export const GET_CUSTOMER_FAILURE = "Failed to fetch customer";
+
+export const UPDATE_CUSTOMER_SUCCESS = "Customer updated successfully";
+export const UPDATE_CUSTOMER_FAILURE = "Failed to update customer";
+
+export const DELETE_CUSTOMER_SUCCESS = "Customer deleted successfully";
+export const DELETE_CUSTOMER_FAILURE = "Failed to delete customer";
