@@ -14,6 +14,7 @@ model User {
   id       String      @id @default(auto()) @map("_id") @db.ObjectId
   email    String      @unique
   name     String?
+  alias    String?
   person   Person      @relation(fields: [personId], references: [id])
   personId String      @db.ObjectId
   posts    Post[]
@@ -31,6 +32,7 @@ model Post {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   slug     String    @unique
   title    String
+  alias    String?
   body     String
   author   User      @relation(fields: [authorId], references: [id])
   authorId String    @db.ObjectId
@@ -38,10 +40,11 @@ model Post {
 }
 
 model Comment {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
   comment String
-  post    Post   @relation(fields: [postId], references: [id])
-  postId  String @db.ObjectId
+  alias   String?
+  post    Post    @relation(fields: [postId], references: [id])
+  postId  String  @db.ObjectId
 }
 
 model Account {
@@ -60,13 +63,15 @@ model Account {
 model Branch {
   id         String      @id @default(auto()) @map("_id") @db.ObjectId
   name       String
-  address    String
+  alias      String?
+  address    Address
   warehouses Warehouse[]
 }
 
 model Warehouse {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   name     String
+  alias    String?
   branch   Branch? @relation(fields: [branchId], references: [id])
   branchId String  @db.ObjectId
 }
@@ -81,9 +86,10 @@ model RefreshToken {
 }
 
 model Supplier {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
   name    String
-  address String
+  alias   String?
+  address Address
   email   String
   phone   String
 }
@@ -91,6 +97,7 @@ model Supplier {
 model Customer {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   name         String
+  alias        String?
   email        String        @unique
   phone        String
   address      Address?
@@ -155,6 +162,7 @@ model Commission {
 model ItemType {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  alias       String?
   description String?
   items       Item[]
 }
@@ -162,6 +170,7 @@ model ItemType {
 model Item {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  alias       String?
   description String?
   itemType    ItemType      @relation(fields: [itemTypeId], references: [id])
   itemTypeId  String        @db.ObjectId
@@ -175,6 +184,7 @@ model Item {
 model CommissionType {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  alias       String?
   description String?
   value       Float
   commissions Commission[]
@@ -183,6 +193,7 @@ model CommissionType {
 model Lot {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  alias       String?
   description String?
   item        Item        @relation(fields: [itemId], references: [id])
   itemId      String      @db.ObjectId
@@ -215,22 +226,23 @@ model Person {
 
 // Generate role model
 model Role {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  name      String      @unique
+  alias     String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   roleGroup RoleGroup[]
 }
 
 // Generate group model
 model Group {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  name      String      @unique
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  users     UserGroup[]
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  name       String      @unique
+  alias      String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  users      UserGroup[]
   roleGroups RoleGroup[]
-
 }
 
 model UserGroup {
@@ -240,7 +252,7 @@ model UserGroup {
   group   Group  @relation(fields: [groupId], references: [id])
   groupId String @db.ObjectId
 }
- 
+
 // Define a model to relate between role and group
 model RoleGroup {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
