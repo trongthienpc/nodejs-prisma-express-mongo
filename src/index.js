@@ -7,7 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import authRouter from "./routes/auth.routes.js";
 import branchRouter from "./routes/branch.routes.js";
-import groupRouter from "./routes/group/group.routes.js"
+import groupRouter from "./routes/group/group.routes.js";
 
 const app = express();
 
@@ -28,7 +28,7 @@ const options = {
     },
     servers: [{ url: "http://localhost:4000" }],
   },
-  apis: ["./src/routes/*.routes.js"],
+  apis: ["./src/routes/*.routes.js", "./src/routes/*/*.routes.js"],
 };
 
 // Routes
@@ -44,9 +44,9 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-// const PORT = process.env.PORT || 4000;
-// app.listen(PORT, () => {
-//   console.log(`Server started on port ${PORT}`);
-// });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
 
 export default app;

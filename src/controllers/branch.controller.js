@@ -5,7 +5,7 @@ import {
   getAllBranches,
   getBranch,
   updateBranch,
-} from "../services/branch.service";
+} from "../services/branch.service.js";
 import {
   CREATE_BRANCH_SUCCESS,
   DELETE_BRANCH_SUCCESS,
@@ -13,8 +13,8 @@ import {
   GET_BRANCH_FAILURE,
   GET_BRANCH_SUCCESS,
   UPDATE_BRANCH_SUCCESS,
-} from "../utils/constants";
-import { generateResponseObject } from "../utils/patterns/response-pattern";
+} from "../utils/constants.js";
+import { generateResponseObject } from "../utils/patterns/response-pattern.js";
 
 // Controller function for creating a new branch
 export const create = async (req, res) => {

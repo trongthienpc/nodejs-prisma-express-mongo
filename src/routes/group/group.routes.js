@@ -1,10 +1,13 @@
-
 import express from "express";
 const router = express.Router();
 import {
-    create, getAll, update, read, remove 
-}
-from "../../controllers/group/groupController.js"
+  create,
+  getAll,
+  update,
+  read,
+  remove,
+} from "../../controllers/group/groupController.js";
+import { checkAuthenticated } from "../../services/jwt.service.js";
 /**
  * @swagger
  * tags:
@@ -25,20 +28,20 @@ from "../../controllers/group/groupController.js"
  *           type: string
  *           description: Name of the group
  *         createdAt:
- *           type: DateTime
+ *           type: Date
  *           description: Date and time of group creation
  *         updatedAt:
- *           type: DateTime
+ *           type: Date
  *           description: Date and time of group update
  *         users:
  *           type: array
  *           items:
- *             $ref: '#/components/schemas/UserGroup'
+ *             $ref: '#/components/schemas/Group'
  *           description: List of users in the group
  *         roleGroups:
  *           type: array
  *           items:
- *             $ref: '#/components/schemas/RoleGroup'
+ *             $ref: '#/components/schemas/Group'
  *           description: List of role groups in the group
  */
 
@@ -65,7 +68,7 @@ from "../../controllers/group/groupController.js"
  *       "500":
  *         description: Internal server error
  */
-router.post("/", create);
+router.post("/", checkAuthenticated, create);
 
 /**
  * @swagger
@@ -85,7 +88,7 @@ router.post("/", create);
  *       "500":
  *         description: Internal server error
  */
-router.get("/", getAll);
+router.get("/", checkAuthenticated, getAll);
 
 /**
  * @swagger
@@ -112,7 +115,7 @@ router.get("/", getAll);
  *       "500":
  *         description: Internal server error
  */
-router.get("/:id", read);
+router.get("/:id", checkAuthenticated, read);
 
 /**
  * @swagger
@@ -144,7 +147,7 @@ router.get("/:id", read);
  *       "500":
  *         description: Internal server error
  */
-router.put("/:id", update);
+router.put("/:id", checkAuthenticated, update);
 
 /**
  * @swagger
@@ -167,8 +170,6 @@ router.put("/:id", update);
  *       "500":
  *         description: Internal server error
  */
-router.delete("/:id", remove);
+router.delete("/:id", checkAuthenticated, remove);
 
 export default router;
-
-
