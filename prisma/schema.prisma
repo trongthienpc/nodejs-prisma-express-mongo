@@ -69,11 +69,12 @@ model Branch {
 }
 
 model Warehouse {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String   @unique
+  address  Address?
   alias    String?
-  branch   Branch? @relation(fields: [branchId], references: [id])
-  branchId String  @db.ObjectId
+  branch   Branch?  @relation(fields: [branchId], references: [id])
+  branchId String   @db.ObjectId
 }
 
 model RefreshToken {

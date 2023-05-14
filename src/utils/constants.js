@@ -67,3 +67,19 @@ export const UPDATE_GROUP_FAILURE = "Failed to update group";
 export const DELETE_GROUP_SUCCESS = "Group deleted successfully";
 export const DELETE_GROUP_FAILURE = "Failed to delete group";
 
+ 
+// CRUD WAREHOUSE CONSTANTS
+export const CREATE_WAREHOUSE_SUCCESS = "Warehouse created successfully";
+export const CREATE_WAREHOUSE_FAILURE = "Failed to create warehouse";
+
+export const GET_ALL_WAREHOUSES_SUCCESS = "Fetched all warehouses successfully";
+export const GET_ALL_WAREHOUSES_FAILURE = "Failed to fetch warehouses";
+
+export const GET_WAREHOUSE_SUCCESS = "Fetched warehouse successfully";
+export const GET_WAREHOUSE_FAILURE = "Failed to fetch warehouse";
+
+export const UPDATE_WAREHOUSE_SUCCESS = "Warehouse updated successfully";
+export const UPDATE_WAREHOUSE_FAILURE = "Failed to update warehouse";
+
+export const DELETE_WAREHOUSE_SUCCESS = "Warehouse deleted successfully";
+export const DELETE_WAREHOUSE_FAILURE = "Failed to delete warehouse";
