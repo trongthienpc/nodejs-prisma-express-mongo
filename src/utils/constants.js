@@ -95,3 +95,19 @@ export const UPDATE_CUSTOMER_FAILURE = "Failed to update customer";
 
 export const DELETE_CUSTOMER_SUCCESS = "Customer deleted successfully";
 export const DELETE_CUSTOMER_FAILURE = "Failed to delete customer";
+ 
+// CRUD SUPPLIER CONSTANTS
+export const CREATE_SUPPLIER_SUCCESS = "Supplier created successfully";
+export const CREATE_SUPPLIER_FAILURE = "Failed to create supplier";
+
+export const GET_ALL_SUPPLIERS_SUCCESS = "Fetched all suppliers successfully";
+export const GET_ALL_SUPPLIERS_FAILURE = "Failed to fetch suppliers";
+
+export const GET_SUPPLIER_SUCCESS = "Fetched supplier successfully";
+export const GET_SUPPLIER_FAILURE = "Failed to fetch supplier";
+
+export const UPDATE_SUPPLIER_SUCCESS = "Supplier updated successfully";
+export const UPDATE_SUPPLIER_FAILURE = "Failed to update supplier";
+
+export const DELETE_SUPPLIER_SUCCESS = "Supplier deleted successfully";
+export const DELETE_SUPPLIER_FAILURE = "Failed to delete supplier";
