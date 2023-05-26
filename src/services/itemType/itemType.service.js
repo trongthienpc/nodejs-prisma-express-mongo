@@ -1,9 +1,11 @@
-// Defining CRUD operations for model customer
-const customerService = {
-  // Create a new customer
+// Defining CRUD operations for model itemType
+import prisma from "../../lib/prisma.js";
+
+const itemTypeService = {
+  // Create a new itemType
   create: async (data) => {
     const alias = data?.name ? createAliasString(data?.name) : "";
-    const existingCustomer = await prisma.customer.findMany({
+    const existingCustomer = await prisma.itemType.findMany({
       where: {
         OR: [
           {
@@ -23,31 +25,31 @@ const customerService = {
         existingCustomer
       );
     } else {
-      const newItem = await prisma.customer.create({
+      const newItem = await prisma.itemType.create({
         data: { ...data, alias: alias },
       });
       return generateResponseObject(true, CREATE_CUSTOMER_SUCCESS, newItem);
     }
   },
 
-  // Get all customers
+  // Get all itemTypes
   getAll: async () => {
-    return await prisma.customer.findMany();
+    return await prisma.itemType.findMany();
   },
 
-  // Get a single customer by id
+  // Get a single itemType by id
   getById: async (id) => {
-    return await prisma.customer.findUnique({
+    return await prisma.itemType.findUnique({
       where: {
         id,
       },
     });
   },
 
-  // Update a customer by id
+  // Update a itemType by id
   updateById: async (id, data) => {
     const alias = data?.name ? createAliasString(data?.name) : "";
-    return await prisma.customer.update({
+    return await prisma.itemType.update({
       where: {
         id,
       },
@@ -55,36 +57,51 @@ const customerService = {
     });
   },
 
-  // Delete a customer by id
+  // Delete a itemType by id
   deleteById: async (id) => {
-    return await prisma.customer.delete({
+    return await prisma.itemType.delete({
       where: {
         id,
       },
     });
   },
 
-  // Find a customer by phone
+  // Find a itemType by phone
   findByPhone: async (phone) => {
-    return await prisma.customer.findUnique({
+    return await prisma.itemType.findUnique({
       where: {
         phone,
       },
     });
   },
 
-  // Find a customer by phone or name or email
+  // Find a itemType by alias or name or description
   search: async (searchTerm) => {
-    return await prisma.customer.findMany({
+    return await prisma.itemType.findMany({
       where: {
         OR: [
-          { phone: { contains: searchTerm } },
+          { alias: { contains: searchTerm } },
           { name: { contains: searchTerm } },
-          { email: { contains: searchTerm } },
+          { description: { contains: searchTerm } },
         ],
       },
     });
   },
+
+  // Find a itemType by name
+  checkExist: async (name) => {
+    const data = await prisma.itemType.findMany({
+      where: {
+        name: name,
+      },
+    });
+
+    if (data.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };
 
-export default customerService;
+export default itemTypeService;
