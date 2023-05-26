@@ -1,12 +1,15 @@
-// utils/crud.js
-
 // Import PrismaClient instance and create a new instance
 import prisma from "../lib/prisma.js";
+import { createAliasString } from "./stringHelper.js";
+
 // Common CRUD function for all models
 const crud = {
   create: async (model, data) => {
     try {
-      const createdItem = await prisma[model].create({ data });
+      const alias = data?.name ? createAliasString(data?.name) : "";
+      const createdItem = await prisma[model].create({
+        data: { ...data, alias },
+      });
       return createdItem;
     } catch (error) {
       throw new Error(`Failed to create ${model}: ${error.message}`);
@@ -33,9 +36,10 @@ const crud = {
 
   updateById: async (model, id, data) => {
     try {
+      const alias = data?.name ? createAliasString(data?.name) : "";
       const updatedItem = await prisma[model].update({
         where: { id },
-        data,
+        data: { ...data, alias },
       });
       return updatedItem;
     } catch (error) {
@@ -53,4 +57,4 @@ const crud = {
   },
 };
 
-module.exports = crud;
+export default crud;
