@@ -95,3 +95,19 @@ export const UPDATE_CUSTOMER_FAILURE = "Failed to update customer";
 
 export const DELETE_CUSTOMER_SUCCESS = "Customer deleted successfully";
 export const DELETE_CUSTOMER_FAILURE = "Failed to delete customer";
+
+// CRUD ITEM-TYPE CONSTANTS
+export const CREATE_ITEM_TYPE_SUCCESS = "Item type created successfully";
+export const CREATE_ITEM_TYPE_FAILURE = "Failed to create item type";
+
+export const GET_ALL_ITEM_TYPES_SUCCESS = "Fetched all item types successfully";
+export const GET_ALL_ITEM_TYPES_FAILURE = "Failed to fetch item types";
+
+export const GET_ITEM_TYPE_SUCCESS = "Fetched item type successfully";
+export const GET_ITEM_TYPE_FAILURE = "Failed to fetch item type";
+
+export const UPDATE_ITEM_TYPE_SUCCESS = "Item type updated successfully";
+export const UPDATE_ITEM_TYPE_FAILURE = "Failed to update item type";
+
+export const DELETE_ITEM_TYPE_SUCCESS = "Item type deleted successfully";
+export const DELETE_ITEM_TYPE_FAILURE = "Failed to delete item type";

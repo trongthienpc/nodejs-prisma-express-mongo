@@ -10,6 +10,7 @@ import branchRouter from "./routes/branch.routes.js";
 import groupRouter from "./routes/group/group.routes.js";
 import warehouseRouter from "./routes/warehouse/warehouse.routes.js";
 import customerRouter from "./routes/customer/customer.routes.js";
+import itemTypeRouter from "./routes/itemType/itemType.routes.js";
 
 const app = express();
 
@@ -28,7 +29,7 @@ const options = {
       version: "1.0.0",
       description: "This is a sample API",
     },
-    servers: [{ url: "http://localhost:4000" }],
+    servers: [{ url: "http://localhost:3000" }],
   },
   apis: ["./src/routes/*.routes.js", "./src/routes/*/*.routes.js"],
 };
@@ -41,6 +42,7 @@ app.use("/api/branch", branchRouter);
 app.use("/api/group", groupRouter);
 app.use("/api/warehouses", warehouseRouter);
 app.use("/api/customers", customerRouter);
+app.use("/api/itemTypes", itemTypeRouter);
 
 // Set up routes
 app.get("/", (req, res) => {
@@ -48,9 +50,9 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//   console.log(`Server started on port ${PORT}`);
-// });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
 
 export default app;
