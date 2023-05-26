@@ -111,3 +111,21 @@ export const UPDATE_ITEM_TYPE_FAILURE = "Failed to update item type";
 
 export const DELETE_ITEM_TYPE_SUCCESS = "Item type deleted successfully";
 export const DELETE_ITEM_TYPE_FAILURE = "Failed to delete item type";
+
+ 
+// CRUD UNIT CONSTANTS
+export const CREATE_UNIT_SUCCESS = "Unit created successfully";
+export const CREATE_UNIT_FAILURE = "Failed to create unit";
+
+export const GET_ALL_UNITS_SUCCESS = "Fetched all units successfully";
+export const GET_ALL_UNITS_FAILURE = "Failed to fetch units";
+
+export const GET_UNIT_SUCCESS = "Fetched unit successfully";
+export const GET_UNIT_FAILURE = "Failed to fetch unit";
+
+export const UPDATE_UNIT_SUCCESS = "Unit updated successfully";
+export const UPDATE_UNIT_FAILURE = "Failed to update unit";
+
+export const DELETE_UNIT_SUCCESS = "Unit deleted successfully";
+export const DELETE_UNIT_FAILURE = "Failed to delete unit";
+
