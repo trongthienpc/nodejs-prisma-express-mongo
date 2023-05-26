@@ -111,3 +111,24 @@ export const UPDATE_ITEM_TYPE_FAILURE = "Failed to update item type";
 
 export const DELETE_ITEM_TYPE_SUCCESS = "Item type deleted successfully";
 export const DELETE_ITEM_TYPE_FAILURE = "Failed to delete item type";
+
+// CRUD CONFIGURATION CONSTANTS
+export const CREATE_CONFIGURATION_SUCCESS =
+  "Configuration created successfully";
+export const CREATE_CONFIGURATION_FAILURE = "Failed to create configuration";
+
+export const GET_ALL_CONFIGURATIONS_SUCCESS =
+  "Fetched all configuration successfully";
+export const GET_ALL_CONFIGURATIONS_FAILURE =
+  "Failed to fetch item configurations";
+
+export const GET_CONFIGURATION_SUCCESS = "Fetched configuration successfully";
+export const GET_CONFIGURATION_FAILURE = "Failed to fetch configuration";
+
+export const UPDATE_CONFIGURATION_SUCCESS =
+  "Configuration updated successfully";
+export const UPDATE_CONFIGURATION_FAILURE = "Failed to update configuration";
+
+export const DELETE_CONFIGURATION_SUCCESS =
+  "Configuration deleted successfully";
+export const DELETE_CONFIGURATION_FAILURE = "Failed to delete configuration";
