@@ -7,10 +7,20 @@ import {
 } from "../../utils/constants.js";
 import crud from "../../utils/crud.js";
 import { generateResponseObject } from "../../utils/patterns/response-pattern.js";
+import itemTypeService from "../../services/itemType/itemType.service.js";
 
 const itemTypeController = {
   createItem: async (req, res) => {
     try {
+      const isExist = await itemTypeService.checkExist(req?.body?.name);
+      if (isExist) {
+        return res
+          .status(500)
+          .json(
+            generateResponseObject(false, "Item type name already exists!")
+          );
+      }
+
       const item = await crud.create("itemType", req.body);
       res
         .status(200)
@@ -50,8 +60,15 @@ const itemTypeController = {
   updateItemById: async (req, res) => {
     const { id } = req.params;
     try {
+      const isExist = await itemTypeService.checkExist(req?.body?.name);
+      if (isExist) {
+        return res
+          .status(500)
+          .json(
+            generateResponseObject(false, "Item type name already exists!")
+          );
+      }
       const item = await crud.updateById("itemType", id, req.body);
-      console.log("item", item);
       res
         .status(200)
         .json(generateResponseObject(true, UPDATE_ITEM_TYPE_SUCCESS, item));
@@ -64,6 +81,7 @@ const itemTypeController = {
     const { id } = req.params;
     try {
       const item = await crud.deleteById("itemType", id);
+      console.log("item", item);
       res
         .status(200)
         .json(generateResponseObject(true, DELETE_ITEM_TYPE_SUCCESS, item));

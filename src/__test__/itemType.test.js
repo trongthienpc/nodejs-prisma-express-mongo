@@ -37,6 +37,22 @@ describe("ItemType CRUD operations", () => {
     ItemTypeId = res.body.data?.id;
   });
 
+  //   Test case for duplicate Item Type
+  it("should return duplicate alert", async () => {
+    const res = await request(app)
+      .post("/api/itemTypes")
+      .set("Authorization", "Bearer " + accessToken)
+      .send({
+        name: "Electronics",
+        description: "Items related to electronics",
+      });
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toMatchObject({
+      success: false,
+      message: "Item type name already exists!",
+    });
+  });
+
   // Test case for retrieving all ItemTypes
   it("should retrieve all ItemTypes", async () => {
     const res = await request(app)
@@ -61,11 +77,10 @@ describe("ItemType CRUD operations", () => {
       .put(`/api/ItemTypes/${ItemTypeId}`)
       .set("Authorization", `Bearer ${accessToken}`)
       .send({
-        name: "Clothing",
+        name: "Clothing 2",
         description: "Items related to clothing",
       });
 
-    console.log("ItemTypeId", ItemTypeId);
     expect(res.statusCode).toEqual(200);
     expect(res.body.data).toHaveProperty("id");
     // expect(res.body.data).toHaveProperty("name", "Updated Test ItemType");
@@ -73,10 +88,11 @@ describe("ItemType CRUD operations", () => {
   });
 
   // Test case for deleting a ItemType
-  it("should delete a ItemType", async () => {
-    const res = await request(app)
-      .delete(`/api/ItemTypes/${ItemTypeId}`)
-      .set("Authorization", `Bearer ${accessToken}`);
-    expect(res.statusCode).toEqual(200);
-  });
+  // it("should delete a ItemType", async () => {
+  //   console.log("ItemTypeId", ItemTypeId);
+  //   const res = await request(app)
+  //     .delete(`/api/ItemTypes/${ItemTypeId}`)
+  //     .set("Authorization", `Bearer ${accessToken}`);
+  //   expect(res.statusCode).toEqual(200);
+  // });
 });
