@@ -11,6 +11,7 @@ import groupRouter from "./routes/group/group.routes.js";
 import warehouseRouter from "./routes/warehouse/warehouse.routes.js";
 import customerRouter from "./routes/customer/customer.routes.js";
 import itemTypeRouter from "./routes/itemType/itemType.routes.js";
+import configurationRouter from "./routes/configuration/configuration.routes.js";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use("/api/group", groupRouter);
 app.use("/api/warehouses", warehouseRouter);
 app.use("/api/customers", customerRouter);
 app.use("/api/itemTypes", itemTypeRouter);
+app.use("/api/configurations", configurationRouter);
 
 // Set up routes
 app.get("/", (req, res) => {

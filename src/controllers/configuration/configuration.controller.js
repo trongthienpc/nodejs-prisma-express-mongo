@@ -1,3 +1,4 @@
+import configurationService from "../../services/configuration/configuration.service.js";
 import {
   CREATE_CONFIGURATION_SUCCESS,
   DELETE_BRANCH_SUCCESS,
@@ -11,6 +12,13 @@ import { generateResponseObject } from "../../utils/patterns/response-pattern.js
 const configurationController = {
   createItem: async (req, res) => {
     try {
+      const { name, model } = req.body;
+      const isExist = await configurationService.checkExist({ name, model });
+      if (isExist) {
+        return res
+          .status(500)
+          .json(generateResponseObject(false, "Configuration already exists!"));
+      }
       const item = await crud.create("configuration", req.body);
       res
         .status(200)
@@ -52,6 +60,13 @@ const configurationController = {
   updateItemById: async (req, res) => {
     const { id } = req.params;
     try {
+      const { name, model } = req.body;
+      const isExist = await configurationService.checkExist({ name, model });
+      if (isExist) {
+        return res
+          .status(500)
+          .json(generateResponseObject(false, "Configuration already exists!"));
+      }
       const item = await crud.updateById("configuration", id, req.body);
       console.log("item", item);
       res
