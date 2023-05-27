@@ -64,7 +64,7 @@ model Branch {
   id         String      @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   alias      String?
-  address    Address
+  address    Address?
   warehouses Warehouse[]
 }
 

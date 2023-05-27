@@ -6,7 +6,7 @@ import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import authRouter from "./routes/auth.routes.js";
-import branchRouter from "./routes/branch.routes.js";
+import branchRouter from "./routes/branch/branch.routes.js";
 import groupRouter from "./routes/group/group.routes.js";
 import warehouseRouter from "./routes/warehouse/warehouse.routes.js";
 import customerRouter from "./routes/customer/customer.routes.js";
