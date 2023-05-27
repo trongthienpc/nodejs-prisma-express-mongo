@@ -280,3 +280,11 @@ model Configuration {
   status      Boolean
   description String?
 }
+
+model itemCategory {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  priority    Int?
+  alias       String?
+  description String?
+}
