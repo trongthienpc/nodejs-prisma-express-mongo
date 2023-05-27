@@ -12,6 +12,7 @@ import warehouseRouter from "./routes/warehouse/warehouse.routes.js";
 import customerRouter from "./routes/customer/customer.routes.js";
 import itemTypeRouter from "./routes/itemType/itemType.routes.js";
 import configurationRouter from "./routes/configuration/configuration.routes.js";
+import itemRouter from "./routes/item/item.routes.js";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use("/api/branch", branchRouter);
 app.use("/api/group", groupRouter);
 app.use("/api/warehouses", warehouseRouter);
 app.use("/api/customers", customerRouter);
+app.use("/api/items", itemRouter);
 app.use("/api/itemTypes", itemTypeRouter);
 app.use("/api/configurations", configurationRouter);
 

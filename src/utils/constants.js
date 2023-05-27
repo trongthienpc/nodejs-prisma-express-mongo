@@ -132,3 +132,19 @@ export const UPDATE_CONFIGURATION_FAILURE = "Failed to update configuration";
 export const DELETE_CONFIGURATION_SUCCESS =
   "Configuration deleted successfully";
 export const DELETE_CONFIGURATION_FAILURE = "Failed to delete configuration";
+
+// CRUD ITEM CONSTANTS
+export const CREATE_ITEM_SUCCESS = "Item created successfully";
+export const CREATE_ITEM_FAILURE = "Failed to create item";
+
+export const GET_ALL_ITEM_SUCCESS = "Fetched all items successfully";
+export const GET_ALL_ITEM_FAILURE = "Failed to fetch items";
+
+export const GET_ITEM_SUCCESS = "Fetched item successfully";
+export const GET_ITEM_FAILURE = "Failed to fetch item";
+
+export const UPDATE_ITEM_SUCCESS = "Item updated successfully";
+export const UPDATE_ITEM_FAILURE = "Failed to update item";
+
+export const DELETE_ITEM_SUCCESS = "Item deleted successfully";
+export const DELETE_ITEM_FAILURE = "Failed to delete item";
