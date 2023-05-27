@@ -281,7 +281,7 @@ model Configuration {
   description String?
 }
 
-model itemCategory {
+model ItemCategory {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   priority    Int?

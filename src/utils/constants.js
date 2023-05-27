@@ -148,3 +148,23 @@ export const UPDATE_ITEM_FAILURE = "Failed to update item";
 
 export const DELETE_ITEM_SUCCESS = "Item deleted successfully";
 export const DELETE_ITEM_FAILURE = "Failed to delete item";
+
+// CRUD ITEM CATEGORY CONSTANTS
+export const CREATE_ITEM_CATEGORY_SUCCESS =
+  "Item category created successfully";
+export const CREATE_ITEM_CATEGORY_FAILURE = "Failed to create item category";
+
+export const GET_ALL_ITEM_CATEGORY_SUCCESS =
+  "Fetched all item category successfully";
+export const GET_ALL_ITEM_CATEGORY_FAILURE = "Failed to fetch item category";
+
+export const GET_ITEM_CATEGORY_SUCCESS = "Fetched item category successfully";
+export const GET_ITEM_CATEGORY_FAILURE = "Failed to fetch item category";
+
+export const UPDATE_ITEM_CATEGORY_SUCCESS =
+  "Item category updated successfully";
+export const UPDATE_ITEM_CATEGORY_FAILURE = "Failed to update item category";
+
+export const DELETE_ITEM_CATEGORY_SUCCESS =
+  "Item category deleted successfully";
+export const DELETE_ITEM_CATEGORY_FAILURE = "Failed to delete item category";
