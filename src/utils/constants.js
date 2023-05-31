@@ -168,3 +168,20 @@ export const UPDATE_ITEM_CATEGORY_FAILURE = "Failed to update item category";
 export const DELETE_ITEM_CATEGORY_SUCCESS =
   "Item category deleted successfully";
 export const DELETE_ITEM_CATEGORY_FAILURE = "Failed to delete item category";
+ 
+// CRUD APPOINTMENT TYPE CONSTANTS
+export const CREATE_APPOINTMENT_TYPE_SUCCESS = "Appointment type created successfully";
+export const CREATE_APPOINTMENT_TYPE_FAILURE = "Failed to create appointment type";
+
+export const GET_ALL_APPOINTMENT_TYPES_SUCCESS = "Fetched all appointment types successfully";
+export const GET_ALL_APPOINTMENT_TYPES_FAILURE = "Failed to fetch appointment types";
+
+export const GET_APPOINTMENT_TYPE_SUCCESS = "Fetched appointment type successfully";
+export const GET_APPOINTMENT_TYPE_FAILURE = "Failed to fetch appointment type";
+
+export const UPDATE_APPOINTMENT_TYPE_SUCCESS = "Appointment type updated successfully";
+export const UPDATE_APPOINTMENT_TYPE_FAILURE = "Failed to update appointment type";
+
+export const DELETE_APPOINTMENT_TYPE_SUCCESS = "Appointment type deleted successfully";
+export const DELETE_APPOINTMENT_TYPE_FAILURE = "Failed to delete appointment type";
+

@@ -14,6 +14,7 @@ import itemTypeRouter from "./routes/itemType/itemType.routes.js";
 import configurationRouter from "./routes/configuration/configuration.routes.js";
 import itemRouter from "./routes/item/item.routes.js";
 import itemCategoryRoute from "./routes/itemCategory/itemCategory.routes.js";
+import appointmentTypeRoute from "./routes/appointment-type/appointmentType.routes.js";
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/items", itemRouter);
 app.use("/api/itemTypes", itemTypeRouter);
 app.use("/api/itemCategory", itemCategoryRoute);
 app.use("/api/configurations", configurationRouter);
+app.use("/api/appointmentType", appointmentTypeRoute);
 
 // Set up routes
 app.get("/", (req, res) => {
