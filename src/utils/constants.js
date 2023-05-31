@@ -202,3 +202,20 @@ export const UPDATE_APPOINTMENT_STATUS_FAILURE = "Failed to update appointment s
 export const DELETE_APPOINTMENT_STATUS_SUCCESS = "Appointment status deleted successfully";
 export const DELETE_APPOINTMENT_STATUS_FAILURE = "Failed to delete appointment status";
 
+ 
+// CRUD APPOINTMENT CONSTANTS
+export const CREATE_APPOINTMENT_SUCCESS = "Appointment created successfully";
+export const CREATE_APPOINTMENT_FAILURE = "Failed to create appointment";
+
+export const GET_ALL_APPOINTMENTS_SUCCESS = "Fetched all appointments successfully";
+export const GET_ALL_APPOINTMENTS_FAILURE = "Failed to fetch appointments";
+
+export const GET_APPOINTMENT_SUCCESS = "Fetched appointment successfully";
+export const GET_APPOINTMENT_FAILURE = "Failed to fetch appointment";
+
+export const UPDATE_APPOINTMENT_SUCCESS = "Appointment updated successfully";
+export const UPDATE_APPOINTMENT_FAILURE = "Failed to update appointment";
+
+export const DELETE_APPOINTMENT_SUCCESS = "Appointment deleted successfully";
+export const DELETE_APPOINTMENT_FAILURE = "Failed to delete appointment";
+
