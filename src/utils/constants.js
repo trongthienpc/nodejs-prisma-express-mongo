@@ -185,3 +185,20 @@ export const UPDATE_APPOINTMENT_TYPE_FAILURE = "Failed to update appointment typ
 export const DELETE_APPOINTMENT_TYPE_SUCCESS = "Appointment type deleted successfully";
 export const DELETE_APPOINTMENT_TYPE_FAILURE = "Failed to delete appointment type";
 
+ 
+// CRUD APPOINTMENT STATUS CONSTANTS
+export const CREATE_APPOINTMENT_STATUS_SUCCESS = "Appointment status created successfully";
+export const CREATE_APPOINTMENT_STATUS_FAILURE = "Failed to create appointment status";
+
+export const GET_ALL_APPOINTMENT_STATUSES_SUCCESS = "Fetched all appointment statuses successfully";
+export const GET_ALL_APPOINTMENT_STATUSES_FAILURE = "Failed to fetch appointment statuses";
+
+export const GET_APPOINTMENT_STATUS_SUCCESS = "Fetched appointment status successfully";
+export const GET_APPOINTMENT_STATUS_FAILURE = "Failed to fetch appointment status";
+
+export const UPDATE_APPOINTMENT_STATUS_SUCCESS = "Appointment status updated successfully";
+export const UPDATE_APPOINTMENT_STATUS_FAILURE = "Failed to update appointment status";
+
+export const DELETE_APPOINTMENT_STATUS_SUCCESS = "Appointment status deleted successfully";
+export const DELETE_APPOINTMENT_STATUS_FAILURE = "Failed to delete appointment status";
+
