@@ -152,13 +152,11 @@ model Appointment {
 }
 
 model AppointmentType {
-  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
-  name                String
-  alias               String
-  description         String?
-  AppointmentConfig   AppointmentConfig? @relation(fields: [appointmentConfigId], references: [id])
-  appointmentConfigId String?            @db.ObjectId
-  Appointment         Appointment[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  alias       String
+  description String?
+  Appointment Appointment[]
 }
 
 model AppointmentStatus {
@@ -177,7 +175,6 @@ model AppointmentConfig {
   timeFrameId            String?
   appointmentTimeframeId String?
   viewConfigId           String?
-  appointmentTypes       AppointmentType[]
   appointmentStatus      AppointmentStatus[]
   checkByStaff           Boolean
   displayByStaff         Boolean
