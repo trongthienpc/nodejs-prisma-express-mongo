@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id       String      @id @default(auto()) @map("_id") @db.ObjectId
-  email    String      @unique
-  name     String?
-  alias    String?
-  person   Person      @relation(fields: [personId], references: [id])
-  personId String      @db.ObjectId
-  posts    Post[]
-  groups   UserGroup[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  email       String        @unique
+  name        String?
+  alias       String?
+  person      Person        @relation(fields: [personId], references: [id])
+  personId    String        @db.ObjectId
+  posts       Post[]
+  groups      UserGroup[]
+  Appointment Appointment[]
 }
 
 type Address {
@@ -61,11 +62,12 @@ model Account {
 }
 
 model Branch {
-  id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  alias      String?
-  address    Address?
-  warehouses Warehouse[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  alias       String?
+  address     Address?
+  warehouses  Warehouse[]
+  Appointment Appointment[]
 }
 
 model Warehouse {
@@ -130,10 +132,78 @@ model OrderDetail {
 
 // Generate customer appointment
 model Appointment {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  customer    Customer @relation(fields: [customerId], references: [id])
-  customerId  String   @db.ObjectId
-  date        DateTime
+  id                  String            @id @default(auto()) @map("_id") @db.ObjectId
+  customerId          String            @db.ObjectId
+  customer            Customer          @relation(fields: [customerId], references: [id])
+  appointmentTypeId   String            @db.ObjectId
+  appointmentType     AppointmentType   @relation(fields: [appointmentTypeId], references: [id])
+  appointmentTime     DateTime
+  loop                Boolean?
+  branchId            String            @db.ObjectId
+  branch              Branch            @relation(fields: [branchId], references: [id])
+  items               Item[]
+  requestedStaffId    String            @db.ObjectId
+  staff               User              @relation(fields: [requestedStaffId], references: [id])
+  appointmentStatusId String            @db.ObjectId
+  appointmentStatus   AppointmentStatus @relation(fields: [appointmentStatusId], references: [id])
+  createdBy           String?
+  createdDate         DateTime
+  description         String?
+}
+
+model AppointmentType {
+  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
+  name                String
+  alias               String
+  description         String?
+  AppointmentConfig   AppointmentConfig? @relation(fields: [appointmentConfigId], references: [id])
+  appointmentConfigId String?            @db.ObjectId
+  Appointment         Appointment[]
+}
+
+model AppointmentStatus {
+  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
+  name                String
+  alias               String
+  color               String?
+  description         String?
+  Appointment         Appointment[]
+  AppointmentConfig   AppointmentConfig? @relation(fields: [appointmentConfigId], references: [id])
+  appointmentConfigId String?            @db.ObjectId
+}
+
+model AppointmentConfig {
+  id                     String              @id @default(auto()) @map("_id") @db.ObjectId
+  timeFrameId            String?
+  appointmentTimeframeId String?
+  viewConfigId           String?
+  appointmentTypes       AppointmentType[]
+  appointmentStatus      AppointmentStatus[]
+  checkByStaff           Boolean
+  displayByStaff         Boolean
+  displayByBranch        Boolean
+  displayDateByStaff     Boolean
+  autoChange             Boolean
+  changeTo               String?
+}
+
+model Timeframe {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  open        String?
+  close       String?
+  period      String?
+  description String?
+}
+
+model AppointmentTimeframe {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  min Int?
+  max Int?
+}
+
+model ViewConfig {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
   description String?
 }
 
@@ -169,16 +239,18 @@ model ItemType {
 }
 
 model Item {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  alias       String?
-  description String?
-  itemType    ItemType      @relation(fields: [itemTypeId], references: [id])
-  itemTypeId  String        @db.ObjectId
-  OrderDetail OrderDetail[]
-  Commission  Commission[]
-  Lot         Lot[]
-  Inventory   Inventory[]
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  alias         String?
+  description   String?
+  itemType      ItemType      @relation(fields: [itemTypeId], references: [id])
+  itemTypeId    String        @db.ObjectId
+  OrderDetail   OrderDetail[]
+  Commission    Commission[]
+  Lot           Lot[]
+  Inventory     Inventory[]
+  Appointment   Appointment?  @relation(fields: [appointmentId], references: [id])
+  appointmentId String?       @db.ObjectId
 }
 
 // Generate commission type with some props like type, value
