@@ -5,11 +5,18 @@ import { createAliasString } from "./stringHelper.js";
 // Common CRUD function for all models
 const crud = {
   create: async (model, data) => {
+    let createdItem;
     try {
-      const alias = data?.name ? createAliasString(data?.name) : "";
-      const createdItem = await prisma[model].create({
-        data: { ...data, alias },
-      });
+      if (data?.name != undefined) {
+        const alias = data?.name ? createAliasString(data?.name) : "";
+        createdItem = await prisma[model].create({
+          data: { ...data, alias },
+        });
+      } else {
+        createdItem = await prisma[model].create({
+          data: data,
+        });
+      }
       return createdItem;
     } catch (error) {
       throw new Error(`Failed to create ${model}: ${error.message}`);
@@ -35,12 +42,20 @@ const crud = {
   },
 
   updateById: async (model, id, data) => {
+    let updatedItem;
     try {
-      const alias = data?.name ? createAliasString(data?.name) : "";
-      const updatedItem = await prisma[model].update({
-        where: { id },
-        data: { ...data, alias },
-      });
+      if (data?.name != undefined) {
+        const alias = data?.name ? createAliasString(data?.name) : "";
+        updatedItem = await prisma[model].update({
+          where: { id },
+          data: { ...data, alias },
+        });
+      } else {
+        updatedItem = await prisma[model].update({
+          where: { id },
+          data: data,
+        });
+      }
       return updatedItem;
     } catch (error) {
       throw new Error(`Failed to update ${model} by ID: ${error.message}`);

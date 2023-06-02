@@ -11,6 +11,7 @@ import { generateResponseObject } from "../../utils/patterns/response-pattern.js
 const appointmentController = {
   createItem: async (req, res) => {
     try {
+      console.log("create appointment");
       const appointment = await crud.create("appointment", req.body);
       res
         .status(200)

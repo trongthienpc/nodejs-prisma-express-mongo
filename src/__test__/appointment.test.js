@@ -24,12 +24,13 @@ describe("Appointment CRUD operations", () => {
       .post("/api/appointment")
       .set("Authorization", "Bearer " + accessToken)
       .send({
-        customerId: "c-1",
-        appointmentTypeId: "at-1",
+        customerId: "6460f077352584221b942f41",
+        appointmentTypeId: "6460f077352584221b942f41",
         appointmentTime: new Date(),
-        branchId: "1",
-        requestedStaffId: "staff1",
-        appointmentStatusId: "status1",
+        branchId: "6460f077352584221b942f41",
+        requestedStaffId: "6460f077352584221b942f41",
+        appointmentStatusId: "6460f077352584221b942f41",
+        createdDate: new Date(),
       });
     expect(res.statusCode).toEqual(200);
     expect(res.body).toMatchObject({
@@ -80,7 +81,7 @@ describe("Appointment CRUD operations", () => {
       .put(`/api/appointment/${appointmentId}`)
       .set("Authorization", `Bearer ${accessToken}`)
       .send({
-        customerId: "c-2",
+        customerId: "6460f077352584221b942f42",
       });
 
     expect(res.statusCode).toEqual(200);
@@ -91,7 +92,6 @@ describe("Appointment CRUD operations", () => {
 
   // Test case for deleting a appointment
   it("should delete a appointment", async () => {
-    console.log("appointmentId", appointmentId);
     const res = await request(app)
       .delete(`/api/appointment/${appointmentId}`)
       .set("Authorization", `Bearer ${accessToken}`);
